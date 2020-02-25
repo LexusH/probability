@@ -41,6 +41,7 @@ multi_substrate_py_library(
         ":batch_reshape",
         ":bernoulli",
         ":beta",
+        ":beta_binomial",
         ":binomial",
         ":blockwise",
         ":categorical",
@@ -65,6 +66,7 @@ multi_substrate_py_library(
         ":gumbel",
         ":half_cauchy",
         ":half_normal",
+        ":half_student_t",
         ":hidden_markov_model",
         ":horseshoe",
         ":independent",
@@ -180,6 +182,25 @@ multi_substrate_py_library(
         # numpy dep,
         # tensorflow dep,
         "//tensorflow_probability/python/bijectors:sigmoid",
+        "//tensorflow_probability/python/internal:assert_util",
+        "//tensorflow_probability/python/internal:distribution_util",
+        "//tensorflow_probability/python/internal:dtype_util",
+        "//tensorflow_probability/python/internal:prefer_static",
+        "//tensorflow_probability/python/internal:reparameterization",
+        "//tensorflow_probability/python/internal:tensor_util",
+        "//tensorflow_probability/python/math:generic",
+        "//tensorflow_probability/python/util:seed_stream",
+    ],
+)
+
+multi_substrate_py_library(
+    name = "beta_binomial",
+    srcs = ["beta_binomial.py"],
+    deps = [
+        ":beta",
+        ":binomial",
+        ":distribution",
+        # tensorflow dep,
         "//tensorflow_probability/python/internal:assert_util",
         "//tensorflow_probability/python/internal:distribution_util",
         "//tensorflow_probability/python/internal:dtype_util",
@@ -626,6 +647,23 @@ multi_substrate_py_library(
 )
 
 multi_substrate_py_library(
+    name = "hypothesis_testlib",
+    testonly = 1,
+    srcs = ["hypothesis_testlib.py"],
+    deps = [
+        # absl/logging dep,
+        # hypothesis dep,
+        # numpy dep,
+        # six dep,
+        # tensorflow dep,
+        "//tensorflow_probability",
+        "//tensorflow_probability/python/bijectors:hypothesis_testlib",
+        "//tensorflow_probability/python/internal:hypothesis_testlib",
+        "//tensorflow_probability/python/internal:tensorshape_util",
+    ],
+)
+
+multi_substrate_py_library(
     name = "independent",
     srcs = ["independent.py"],
     deps = [
@@ -686,6 +724,8 @@ multi_substrate_py_library(
         # numpy dep,
         # six dep,
         # tensorflow dep,
+        "//tensorflow_probability/python/bijectors:bijector",
+        "//tensorflow_probability/python/bijectors:identity",
         "//tensorflow_probability/python/internal:assert_util",
         "//tensorflow_probability/python/internal:distribution_util",
         "//tensorflow_probability/python/internal:docstring_util",
@@ -748,7 +788,6 @@ multi_substrate_py_library(
         ":joint_distribution",
         ":kullback_leibler",
         # tensorflow dep,
-        "//tensorflow_probability/python/bijectors:bijector",
         "//tensorflow_probability/python/internal:distribution_util",
         "//tensorflow_probability/python/util:seed_stream",
     ],
@@ -1313,6 +1352,24 @@ multi_substrate_py_library(
 )
 
 multi_substrate_py_library(
+    name = "half_student_t",
+    srcs = ["half_student_t.py"],
+    deps = [
+        ":distribution",
+        ":student_t",
+        # numpy dep,
+        # tensorflow dep,
+        "//tensorflow_probability/python/bijectors:identity",
+        "//tensorflow_probability/python/internal:assert_util",
+        "//tensorflow_probability/python/internal:distribution_util",
+        "//tensorflow_probability/python/internal:dtype_util",
+        "//tensorflow_probability/python/internal:prefer_static",
+        "//tensorflow_probability/python/internal:reparameterization",
+        "//tensorflow_probability/python/internal:tensor_util",
+    ],
+)
+
+multi_substrate_py_library(
     name = "student_t",
     srcs = ["student_t.py"],
     deps = [
@@ -1611,6 +1668,21 @@ multi_substrate_py_test(
         # scipy dep,
         # tensorflow dep,
         "//tensorflow_probability",
+        "//tensorflow_probability/python/internal:test_util",
+    ],
+)
+
+multi_substrate_py_test(
+    name = "beta_binomial_test",
+    size = "medium",
+    srcs = ["beta_binomial_test.py"],
+    jax_tags = ["notap"],
+    numpy_tags = ["notap"],
+    deps = [
+        # numpy dep,
+        # tensorflow dep,
+        "//tensorflow_probability",
+        "//tensorflow_probability/python/distributions/internal:statistical_testing",
         "//tensorflow_probability/python/internal:test_util",
     ],
 )
@@ -2550,6 +2622,23 @@ multi_substrate_py_test(
 )
 
 multi_substrate_py_test(
+    name = "half_student_t_test",
+    size = "medium",
+    srcs = ["half_student_t_test.py"],
+    jax_size = "medium",
+    jax_tags = ["notap"],
+    deps = [
+        # numpy dep,
+        # scipy dep,
+        # tensorflow dep,
+        "//tensorflow_probability",
+        "//tensorflow_probability/python/distributions/internal:statistical_testing",
+        "//tensorflow_probability/python/internal:assert_util",
+        "//tensorflow_probability/python/internal:test_util",
+    ],
+)
+
+multi_substrate_py_test(
     name = "student_t_test",
     srcs = ["student_t_test.py"],
     jax_size = "medium",
@@ -2750,17 +2839,16 @@ py_test(
     name = "distribution_properties_test",
     size = "large",
     srcs = ["distribution_properties_test.py"],
-    shard_count = 20,
+    shard_count = 40,
     tags = ["hypothesis"],
     deps = [
-        # absl/logging dep,
+        ":hypothesis_testlib",
         # absl/testing:parameterized dep,
         # hypothesis dep,
         # numpy dep,
         # six dep,
         # tensorflow dep,
         "//tensorflow_probability",
-        "//tensorflow_probability/python/bijectors:hypothesis_testlib",
         "//tensorflow_probability/python/internal:hypothesis_testlib",
         "//tensorflow_probability/python/internal:tensor_util",
         "//tensorflow_probability/python/internal:tensorshape_util",
@@ -2816,6 +2904,7 @@ exports_files(
         "gumbel.py",
         "half_cauchy.py",
         "half_normal.py",
+        "half_student_t.py",
         "hidden_markov_model.py",
         "horseshoe.py",
         "independent.py",

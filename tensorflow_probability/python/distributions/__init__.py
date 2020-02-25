@@ -24,6 +24,7 @@ from tensorflow_probability.python.distributions.autoregressive import Autoregre
 from tensorflow_probability.python.distributions.batch_reshape import BatchReshape
 from tensorflow_probability.python.distributions.bernoulli import Bernoulli
 from tensorflow_probability.python.distributions.beta import Beta
+from tensorflow_probability.python.distributions.beta_binomial import BetaBinomial
 from tensorflow_probability.python.distributions.binomial import Binomial
 from tensorflow_probability.python.distributions.blockwise import Blockwise
 from tensorflow_probability.python.distributions.categorical import Categorical
@@ -49,6 +50,7 @@ from tensorflow_probability.python.distributions.geometric import Geometric
 from tensorflow_probability.python.distributions.gumbel import Gumbel
 from tensorflow_probability.python.distributions.half_cauchy import HalfCauchy
 from tensorflow_probability.python.distributions.half_normal import HalfNormal
+from tensorflow_probability.python.distributions.half_student_t import HalfStudentT
 from tensorflow_probability.python.distributions.hidden_markov_model import HiddenMarkovModel
 from tensorflow_probability.python.distributions.horseshoe import Horseshoe
 from tensorflow_probability.python.distributions.independent import Independent
@@ -145,6 +147,7 @@ __all__ = [
     'BatchReshape',
     'Bernoulli',
     'Beta',
+    'BetaBinomial',
     'Binomial',
     'Blockwise',
     'Categorical',
@@ -169,6 +172,7 @@ __all__ = [
     'Gumbel',
     'HalfCauchy',
     'HalfNormal',
+    'HalfStudentT',
     'HiddenMarkovModel',
     'Horseshoe',
     'Independent',
